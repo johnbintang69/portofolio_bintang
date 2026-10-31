@@ -200,7 +200,7 @@
     let dpr = 1;
     let particles = [];
     const mouse = { x: -9999, y: -9999 };
-    const count = prefersReduced ? 36 : 95;
+    const count = prefersReduced ? 24 : (window.innerWidth < 768 ? 30 : 55);
 
     function resize() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -330,7 +330,7 @@
     ];
 
     const startTime = performance.now();
-    const duration = 2100;
+    const duration = 1200;
 
     function frame(now) {
       const elapsed = now - startTime;
