@@ -442,9 +442,9 @@
     }
   }
 
-    /* =========================================================
-   * Interactive Hero Title (BINTANG Cursor Interaction)
-   * ========================================================= */
+  /* =========================================================
+ * Interactive Hero Title (BINTANG Cursor Interaction)
+ * ========================================================= */
   function initHeroInteractiveTitle() {
     const heroName = document.getElementById('hero-name');
     const hero = document.getElementById('hero');
@@ -786,8 +786,8 @@
         burstSparks(cx, cy, 32);
       }
 
-      gsap.fromTo(track, 
-        { scale: 0.92 }, 
+      gsap.fromTo(track,
+        { scale: 0.92 },
         { scale: 1, duration: 0.5, ease: 'elastic.out(1.2, 0.35)' }
       );
     });
@@ -1961,7 +1961,7 @@
 
     const lines = [
       { text: '> whoami', dim: true },
-      { text: 'bintang@kendal — Frontend & Fullstack Developer' },
+      { text: 'bintangilhamkurniawan@gmail — Frontend & Fullstack Developer' },
       { text: '> cat background.md', dim: true },
       {
         text: 'Pengembang web yang berfokus pada frontend modern dengan React serta kapabilitas fullstack menggunakan Express.js dan Laravel framework. Menguasai JavaScript, Python, dan arsitektur database MySQL & PostgreSQL.',
