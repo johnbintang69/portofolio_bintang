@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — BINTANG Arsenal</title>
+  <meta name="description"
+    content="Portfolio Project Showcase — Rebranding Website Dispora Semarang, Ticketing App, Valorant Match Predictor, Environmental Early Warning System by Bintang." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="projects" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" class="is-active" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main>
+    <header class="page-hero">
+      <h1>Projects</h1>
+      <p>Holographic arsenal · hover for 3D reflection</p>
+    </header>
+
+    <div class="projects-grid">
+      <!-- Project 1 — red -->
+      <article class="holo-card" data-accent="red" data-cursor="hover">
+        <div class="holo-inner">
+          <div class="holo-glare" aria-hidden="true"></div>
+          <div class="holo-body">
+            <span class="holo-tag">PRJ_01 · Gaming ML</span>
+            <h2 class="holo-title">Valorant Match Predictor</h2>
+            <p class="holo-desc">
+              Model machine learning untuk memprediksi hasil pertandingan berdasarkan fitur delta,
+              dengan algoritma Naive Bayes, Decision Tree, dan XGBoost.
+            </p>
+            <div class="holo-chips">
+              <span class="holo-chip">Naive Bayes</span>
+              <span class="holo-chip">XGBoost</span>
+              <span class="holo-chip">Decision Tree</span>
+              <span class="holo-chip">Delta Features</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 2 — blue: REBRANDING WEBSITE DISPORA SEMARANG -->
+      <article class="holo-card" data-accent="blue" data-cursor="hover">
+        <div class="holo-inner">
+          <div class="holo-glare" aria-hidden="true"></div>
+          <div class="holo-body">
+            <span class="holo-tag">PRJ_02 · Internship / GovTech</span>
+            <h2 class="holo-title">Rebranding Website Dispora Semarang</h2>
+            <p class="holo-desc">
+              Proyek magang peremajaan dan modernisasi portal web resmi Dinas Kepemudaan dan Olahraga Kota Semarang.
+              Mengintegrasikan backend Laravel yang tangguh dengan antarmuka React interaktif serta database MySQL untuk
+              pengelolaan informasi publik yang cepat dan terstruktur.
+            </p>
+            <div class="holo-chips">
+              <span class="holo-chip">Laravel</span>
+              <span class="holo-chip">React</span>
+              <span class="holo-chip">MySQL</span>
+              <span class="holo-chip">Tailwind CSS</span>
+              <span class="holo-chip">RESTful API</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 3 — purple: TICKETING APP -->
+      <article class="holo-card" data-accent="purple" data-cursor="hover">
+        <div class="holo-inner">
+          <div class="holo-glare" aria-hidden="true"></div>
+          <div class="holo-body">
+            <span class="holo-tag">PRJ_03 · Fullstack / E-Commerce</span>
+            <h2 class="holo-title">Ticketing App</h2>
+            <p class="holo-desc">
+              Aplikasi pemesanan dan pembelian tiket konser musik secara daring. Dibangun dengan framework Laravel untuk
+              validasi kuota tiket dan pengolahan transaksi, serta React untuk sistem pemilihan kategori tiket dan
+              antarmuka checkout yang interaktif dan responsif.
+            </p>
+            <div class="holo-chips">
+              <span class="holo-chip">Laravel</span>
+              <span class="holo-chip">React</span>
+              <span class="holo-chip">MySQL</span>
+              <span class="holo-chip">State Management</span>
+              <span class="holo-chip">Responsive UI</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project 4 — green: ENVIRONMENTAL EARLY WARNING SYSTEM -->
+      <article class="holo-card" data-accent="green" data-cursor="hover">
+        <div class="holo-inner">
+          <div class="holo-glare" aria-hidden="true"></div>
+          <div class="holo-body">
+            <span class="holo-tag">PRJ_04 · Systems</span>
+            <h2 class="holo-title">Environmental Early Warning System</h2>
+            <p class="holo-desc">
+              Perancangan Software Requirements Specification (SRS) dan UML Activity Diagram
+              untuk tata kelola sampah serta peringatan dini lingkungan kota.
+            </p>
+            <div class="holo-chips">
+              <span class="holo-chip">SRS</span>
+              <span class="holo-chip">UML Activity</span>
+              <span class="holo-chip">Waste Governance</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <a href="contact.html" data-cursor="hover">Transmit signal →</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

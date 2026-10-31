@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — TRANSMIT DATA · BINTANG</title>
+  <meta name="description" content="Formulir kontak bergaya terminal komando — transmit data ke Bintang." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="contact" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" class="is-active" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main class="contact-wrap">
+    <h1>Contact</h1>
+
+    <form id="cmd-form" class="cmd-form" novalidate>
+      <p class="cmd-prompt"><span>guest@signal</span>:~$ ./transmit --channel=secure</p>
+
+      <div class="cmd-field">
+        <label for="name">Name</label>
+        <div class="cmd-input-row">
+          <input id="name" name="name" type="text" class="cmd-input" required autocomplete="name" data-cursor="hover" />
+          <span class="cmd-caret" aria-hidden="true">_</span>
+        </div>
+      </div>
+
+      <div class="cmd-field">
+        <label for="message">Message</label>
+        <div class="cmd-input-row cmd-input-row--area">
+          <textarea id="message" name="message" class="cmd-input" rows="4" required data-cursor="hover"></textarea>
+          <span class="cmd-caret" aria-hidden="true">_</span>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-transmit" class="btn-transmit" data-cursor="hover">
+        Transmit Data
+      </button>
+      <p id="form-status" class="form-status" role="status"></p>
+    </form>
+
+    <div class="contact-socials">
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" data-cursor="hover">GitHub</a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" data-cursor="hover">LinkedIn</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <span>Channel open · awaiting packet</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

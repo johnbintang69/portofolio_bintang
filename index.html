@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BINTANG — Frontend & Fullstack Developer</title>
+  <meta name="description"
+    content="Portfolio Frontend & Fullstack Developer — React, Express.js, Laravel, JavaScript, Python, PostgreSQL, MySQL by Bintang." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="home" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+    <div class="preloader-center preloader-charge-hud">
+      <div class="charge-header">
+        <span class="charge-tag">// SYSTEM OVERCLOCK</span>
+        <span class="charge-subtag" id="charge-status">INITIALIZING POWER CORE...</span>
+      </div>
+
+      <div class="charge-core-container">
+        <div class="charge-core-ring" aria-hidden="true"></div>
+        <div class="charge-core-glow" aria-hidden="true"></div>
+        <div class="charge-core-data">
+          <span class="charge-num" id="charge-percent">0</span>
+          <span class="charge-symbol">%</span>
+        </div>
+      </div>
+
+      <div class="charge-meter-wrap">
+        <div class="charge-meter-bar">
+          <div class="charge-meter-fill" id="charge-bar-fill"></div>
+        </div>
+        <div class="charge-ticks" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="charge-footer">
+        <span class="charge-meta-label">FREQ: <span id="charge-freq">1.2</span> GHz</span>
+        <span class="charge-meta-status">SYS_CHARGE &gt; ACTIVE</span>
+      </div>
+    </div>
+    <div id="preloader-top" class="preloader-half preloader-top"></div>
+    <div id="preloader-bottom" class="preloader-half preloader-bottom"></div>
+  </div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" class="is-active" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main id="cinematic-main">
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <canvas id="particle-canvas" aria-hidden="true"></canvas>
+      <div class="hero-vignette" aria-hidden="true"></div>
+      <div class="hero-blast-veil" id="hero-blast-veil" aria-hidden="true"></div>
+
+      <div class="hero-content" id="hero-content">
+        <p class="hero-kicker" id="hero-kicker">// frontend &amp; fullstack engineer protocol</p>
+        <h1 class="hero-name" id="hero-name" data-text="BINTANG" aria-label="BINTANG">
+          <div class="hero-name-spotlight" id="hero-name-spotlight" aria-hidden="true"></div>
+          <span class="hero-name-track" id="hero-name-track" aria-hidden="true">
+            <span class="hero-char" data-char="B"><span class="hero-char-inner">B</span></span>
+            <span class="hero-char" data-char="I"><span class="hero-char-inner">I</span></span>
+            <span class="hero-char" data-char="N"><span class="hero-char-inner">N</span></span>
+            <span class="hero-char" data-char="T"><span class="hero-char-inner">T</span></span>
+            <span class="hero-char" data-char="A"><span class="hero-char-inner">A</span></span>
+            <span class="hero-char" data-char="N"><span class="hero-char-inner">N</span></span>
+            <span class="hero-char" data-char="G"><span class="hero-char-inner">G</span></span>
+          </span>
+          <canvas class="hero-sparks-canvas" id="hero-sparks-canvas" aria-hidden="true"></canvas>
+        </h1>
+        <p id="hero-roles" class="hero-roles"></p>
+        <div class="cta-wrap" id="cta-wrap">
+          <a href="#mantra" class="btn-magnetic" id="deploy-cta" data-cursor="hover">
+            Deploy Sequence
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              aria-hidden="true">
+              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 SIGNAL -->
+    <section class="home-strip" id="signal">
+      <div class="home-strip-inner">
+        <p class="font-mono text-xs tracking-[0.25em] uppercase text-neon-purple">01 — Signal</p>
+        <p class="signal-lede">
+          Portofolio interaktif seorang Frontend Developer dengan kapabilitas Fullstack modern. Berfokus pada
+          pengembangan antarmuka React yang responsif dan interaktif, arsitektur backend Express.js &amp; Laravel, serta
+          manajemen database terstruktur MySQL &amp; PostgreSQL.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-2">
+          <a href="projects.html"
+            class="font-mono text-sm tracking-widest uppercase text-neon-blue border-b border-neon-blue/40 pb-1"
+            data-cursor="hover">View arsenal</a>
+          <a href="about.html"
+            class="font-mono text-sm tracking-widest uppercase text-zinc-400 border-b border-white/15 pb-1"
+            data-cursor="hover">Read logs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 MANTRA -->
+    <section id="mantra" class="mantra-section">
+      <div class="mantra-pin">
+        <p class="mantra-label">02 — Mantra</p>
+        <h2 class="mantra-huge" id="mantra-live" aria-label="CRAFT. SCALE. OPTIMIZE.">
+          <span class="mantra-flow">CRAFT.</span>
+          <span class="mantra-flow">SCALE.</span>
+          <span class="mantra-flow">
+            <span id="expand-o" class="mantra-o">O</span>PTIMIZE.
+          </span>
+        </h2>
+        <div class="mantra-cover" id="mantra-cover" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 03 THE GRID / SYSTEM METRICS -->
+    <section id="the-grid" class="grid-section">
+      <canvas id="grid-bg-canvas" class="grid-bg-canvas" aria-hidden="true"></canvas>
+      <div class="grid-pin" id="grid-pin">
+        <p class="grid-section-label">03 — The Grid</p>
+        <div class="grid-layers" id="grid-layers" aria-hidden="true">
+          <div class="grid-layer" id="grid-layer-0" data-layer="0">
+            <span class="grid-num">01.</span>
+            <span class="grid-word">INTERFACE</span>
+          </div>
+          <div class="grid-layer" id="grid-layer-1" data-layer="1">
+            <span class="grid-num">02.</span>
+            <span class="grid-word">ARCHITECTURE</span>
+          </div>
+          <div class="grid-layer" id="grid-layer-2" data-layer="2">
+            <span class="grid-num">03.</span>
+            <span class="grid-word">PERSISTENCE</span>
+          </div>
+        </div>
+        <p class="grid-progress-label" id="grid-progress-label" aria-live="polite">Exploring modern fullstack
+          architecture</p>
+      </div>
+    </section>
+
+    <!-- 04 CORE PHILOSOPHY -->
+    <section id="core-philosophy" class="philosophy-pin-section">
+      <div class="philo-pin" id="philo-pin">
+        <div class="philo-bg-text" aria-hidden="true">
+          <div class="philo-row philo-row-1" id="philo-row-1">
+            <span>CODE WITH PURPOSE</span><span>CODE WITH PURPOSE</span>
+          </div>
+          <div class="philo-row philo-row-2" id="philo-row-2">
+            <span>PIXEL-PERFECT DESIGN</span><span>PIXEL-PERFECT DESIGN</span>
+          </div>
+          <div class="philo-row philo-row-3" id="philo-row-3">
+            <span>ROBUST ARCHITECTURE</span><span>ROBUST ARCHITECTURE</span>
+          </div>
+        </div>
+        <div class="philo-card-wrap" id="philo-card-wrap">
+          <div class="philo-glass-card" data-cursor="hover">
+            <div class="philo-card-header">
+              <span class="philo-badge">// CORE PHILOSOPHY</span>
+              <span class="philo-status-dot" aria-hidden="true"></span>
+            </div>
+            <p class="philo-section-label">04 — Core Philosophy</p>
+            <blockquote class="philo-quote">
+              Antarmuka yang intuitif berawal dari empati pengguna, ditenagai oleh arsitektur kode yang tangguh.
+              Menggabungkan ketelitian frontend React dengan keandalan backend Express &amp; Laravel untuk membangun
+              pengalaman web yang cepat, elegan, dan terstruktur.
+            </blockquote>
+            <div class="philo-card-footer">
+              <span class="philo-author">BINTANG — FRONTEND &amp; FULLSTACK DEVELOPER</span>
+              <span class="philo-ver">v4.2.0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 DECRYPTION -->
+    <section id="decrypt" class="decrypt-section">
+      <div class="decrypt-pin">
+        <div class="topo-grid" id="topo-grid" aria-hidden="true"></div>
+        <p class="decrypt-label">06 — Decryption</p>
+        <p class="decrypt-text" id="decrypt-text">
+          Berbasis di Kendal. Merancang antarmuka presisi dan sistem modular. Menguasai frontend React modern, backend
+          Express &amp; Laravel, serta arsitektur data PostgreSQL &amp; MySQL.
+        </p>
+      </div>
+    </section>
+
+    <!-- 04 ARSENAL HORIZONTAL -->
+    <section id="arsenal" class="arsenal-section">
+      <div class="arsenal-pin">
+        <div class="arsenal-head">
+          <p class="decrypt-label">04 — Arsenal</p>
+          <p class="arsenal-hint font-mono">Scroll to traverse the corridor →</p>
+        </div>
+        <div class="arsenal-viewport">
+          <div class="arsenal-track" id="arsenal-track">
+            <article class="arsenal-panel" data-accent="red" data-cursor="hover">
+              <div class="arsenal-glass">
+                <div class="arsenal-glare" aria-hidden="true"></div>
+                <span class="arsenal-tag">Panel 01</span>
+                <h3>Frontend Architecture</h3>
+                <p>
+                  Pengembangan antarmuka modern menggunakan React, Tailwind CSS, dan JavaScript. Berfokus pada komponen
+                  modular, state management reaktif, aksesibilitas, dan animasi interaktif performa tinggi.
+                </p>
+              </div>
+            </article>
+            <article class="arsenal-panel" data-accent="green" data-cursor="hover">
+              <div class="arsenal-glass">
+                <div class="arsenal-glare" aria-hidden="true"></div>
+                <span class="arsenal-tag">Panel 02</span>
+                <h3>Fullstack &amp; API Systems</h3>
+                <p>
+                  Pembangunan RESTful API yang efisien dengan Express.js serta pengembangan web terstruktur berbasis
+                  Laravel framework. Menggabungkan arsitektur MVC, validasi request yang ketat, dan integrasi
+                  frontend-backend yang mulus.
+                </p>
+              </div>
+            </article>
+            <article class="arsenal-panel" data-accent="blue" data-cursor="hover">
+              <div class="arsenal-glass">
+                <div class="arsenal-glare" aria-hidden="true"></div>
+                <span class="arsenal-tag">Panel 03</span>
+                <h3>Database &amp; Python Scripting</h3>
+                <p>
+                  Pengelolaan data relasional terstruktur menggunakan PostgreSQL dan MySQL, didukung scripting
+                  otomatisasi, pemrosesan data, dan integrasi backend menggunakan Python.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 SYSTEM CORE -->
+    <section id="core" class="core-section">
+      <div class="core-inner">
+        <p class="decrypt-label">05 — System Core</p>
+        <h2 class="core-title">Tech gravity well</h2>
+        <div class="core-orbit" id="core-orbit">
+          <span class="core-node" data-orbit>React</span>
+          <span class="core-node" data-orbit>JavaScript</span>
+          <span class="core-node" data-orbit>Express.js</span>
+          <span class="core-node" data-orbit>Laravel</span>
+          <span class="core-node" data-orbit>Python</span>
+          <span class="core-node" data-orbit>PostgreSQL</span>
+          <span class="core-node" data-orbit>MySQL</span>
+          <span class="core-node" data-orbit>Tailwind</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 DATA STREAM -->
+    <section id="data-stream" class="stream-section">
+      <canvas id="stream-canvas" class="stream-canvas" aria-hidden="true"></canvas>
+      <div class="stream-grid-vignette" aria-hidden="true"></div>
+      <div class="stream-entry-veil" id="stream-veil" aria-hidden="true"></div>
+      <div class="stream-content" id="stream-content">
+        <p class="decrypt-label">06 — The Data Stream</p>
+        <h2 class="stream-title">PROCESSING FULLSTACK FLOW</h2>
+        <div class="stream-meter">
+          <div class="stream-counter-wrap">
+            <span class="stream-counter" id="stream-percent">0</span><span class="stream-unit">%</span>
+          </div>
+          <div class="stream-progress-track">
+            <div class="stream-progress-bar" id="stream-bar"></div>
+          </div>
+          <p class="stream-status" id="stream-status">Optimizing throughput: 0%</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 NEURAL TIMELINE -->
+    <section id="neural-timeline" class="neural-section">
+      <div class="neural-header">
+        <p class="decrypt-label">07 — The Neural Timeline</p>
+        <h2 class="neural-title">Evolutionary Architecture</h2>
+      </div>
+
+      <div class="timeline-container">
+        <div class="timeline-track">
+          <div class="timeline-beam" id="timeline-beam"></div>
+        </div>
+
+        <div class="timeline-nodes">
+          <div class="timeline-item timeline-left" data-node="1">
+            <div class="timeline-node-dot">
+              <span class="node-pulse"></span>
+            </div>
+            <div class="timeline-card" data-cursor="hover">
+              <span class="timeline-tag">01 // ORIGIN</span>
+              <h3 class="timeline-heading">Base: Kendal</h3>
+              <p class="timeline-sub">Awal mula eksplorasi web &amp; rekayasa perangkat lunak</p>
+            </div>
+          </div>
+
+          <div class="timeline-item timeline-right" data-node="2">
+            <div class="timeline-node-dot">
+              <span class="node-pulse"></span>
+            </div>
+            <div class="timeline-card" data-cursor="hover">
+              <span class="timeline-tag">02 // FOUNDATION</span>
+              <h3 class="timeline-heading">Core Programming</h3>
+              <p class="timeline-sub">Penguasaan mendalam logika JavaScript &amp; Python</p>
+            </div>
+          </div>
+
+          <div class="timeline-item timeline-left" data-node="3">
+            <div class="timeline-node-dot">
+              <span class="node-pulse"></span>
+            </div>
+            <div class="timeline-card" data-cursor="hover">
+              <span class="timeline-tag">03 // FRONTEND CRAFT</span>
+              <h3 class="timeline-heading">React &amp; Modern UI</h3>
+              <p class="timeline-sub">Membangun antarmuka interaktif, fluid &amp; responsif</p>
+            </div>
+          </div>
+
+          <div class="timeline-item timeline-right" data-node="4">
+            <div class="timeline-node-dot">
+              <span class="node-pulse"></span>
+            </div>
+            <div class="timeline-card" data-cursor="hover">
+              <span class="timeline-tag">04 // FULLSTACK EXTENSION</span>
+              <h3 class="timeline-heading">Express.js, Laravel &amp; Databases</h3>
+              <p class="timeline-sub">Orkestrasi RESTful API, PostgreSQL &amp; MySQL</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 THE OMNISCIENT TEXT -->
+    <section id="omniscient-text" class="omni-section">
+      <div class="omni-pin" id="omni-pin">
+        <p class="omni-label" id="omni-label">04 — The Omniscient Text</p>
+
+        <!-- Giant chaotic stack (split into chars by JS) -->
+        <div class="omni-stack" id="omni-stack"
+          aria-label="CLEAN INTERFACE. ROBUST BACKEND. BRIDGING LOGIC INTO EXPERIENCES.">
+          <span class="omni-line">CLEAN INTERFACE.</span>
+          <span class="omni-line">ROBUST BACKEND.</span>
+          <span class="omni-line omni-line--wide">BRIDGING LOGIC INTO EXPERIENCES.</span>
+        </div>
+
+        <!-- Blood-red neon revelation -->
+        <p class="omni-reveal" id="omni-reveal">
+          Design is the language. Code is the bridge. Exceptional user experience is the goal.
+        </p>
+
+        <!-- Full-screen flashbang -->
+        <div class="omni-flashbang" id="omni-flashbang" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 05 THE SINGULARITY -->
+    <section id="the-singularity" class="singularity-section">
+      <div class="sng-pin" id="sng-pin">
+        <!-- Phase 1: code shards are injected here by JS -->
+        <div class="sng-fragment-field" id="sng-fragment-field" aria-hidden="true"></div>
+
+        <!-- Convergence core: the blinding light block -->
+        <div class="sng-flash" id="sng-flash" aria-hidden="true">
+          <div class="sng-flash-core" id="sng-flash-core"></div>
+          <div class="sng-flash-ring" id="sng-flash-ring"></div>
+        </div>
+
+        <!-- Phase 2: shatter debris (injected by JS) -->
+        <div class="sng-shatter-field" id="sng-shatter-field" aria-hidden="true"></div>
+
+        <!-- Phase 2b: philosophy reveal -->
+        <div class="sng-text-wrap" id="sng-text-wrap">
+          <p class="sng-label" id="sng-label">05 — The Singularity</p>
+          <p class="sng-quote" id="sng-quote">
+            Antarmuka bukan sekadar tampilan visual, melainkan titik temu antara interaksi manusia dan keandalan sistem
+            di baliknya. Dari komponen React hingga query PostgreSQL &amp; MySQL, setiap baris kode dirancang untuk
+            performa dan efisiensi.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 THE VOID -->
+    <section id="void-zone" class="void-section">
+      <div class="void-emptiness" aria-hidden="true"></div>
+      <div class="void-reveal">
+        <div class="void-laser" id="void-laser" aria-hidden="true"></div>
+        <a href="contact.html" class="void-cta btn-magnetic" id="void-cta" data-cursor="hover">
+          INITIATE_CONTACT
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <span>Kendal · Frontend &amp; Fullstack Development</span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
