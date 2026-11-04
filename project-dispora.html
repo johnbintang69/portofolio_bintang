@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rebranding Website Dispora Semarang — BINTANG</title>
+  <meta name="description" content="An internship project to rebrand and modernize the official website of Dinas Kepemudaan dan Olahraga (Dispora) Kota Semarang — the city youth and sports agency." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="project-detail" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main class="detail-main" data-accent="blue">
+
+    <!-- Back button -->
+    <a href="projects.html" class="detail-back font-mono" data-cursor="hover" aria-label="Back to projects">
+      <span class="detail-back-arrow">←</span> All Projects
+    </a>
+
+    <!-- Hero -->
+    <header class="detail-hero">
+      <div class="detail-hero-meta">
+        <span class="detail-num font-mono">PRJ_02</span>
+        <span class="detail-category font-mono" style="color:#00d4ff">GovTech / Internship</span>
+        <span class="detail-year font-mono">2025</span>
+      </div>
+      <h1 class="detail-title font-display" style="--accent: #00d4ff">Rebranding Website Dispora Semarang</h1>
+      <p class="detail-tagline">Modernizing the official web portal of Dinas Kepemudaan dan Olahraga Kota Semarang.</p>
+
+      <!-- Accent glow bar -->
+      <div class="detail-hero-bar" style="background: #00d4ff" aria-hidden="true"></div>
+
+      <!-- Image -->
+      <img src="disporasemarang.jpg" alt="Rebranding Dispora Semarang" class="w-full max-w-4xl mx-auto rounded-xl border border-white/10 shadow-2xl mb-12" />
+
+      <!-- CSS mockup banner -->
+      <div class="detail-banner" data-accent="blue" aria-hidden="true">
+        <div class="banner-scanlines"></div>
+        <div class="banner-content">
+          <div class="banner-num font-mono">02</div>
+          <div class="banner-label font-display">REBRANDING WEBSITE DISPORA SEMARANG</div>
+          <div class="banner-chips">
+            <span class="banner-chip font-mono">Laravel</span><span class="banner-chip font-mono">React</span><span class="banner-chip font-mono">MySQL</span>
+          </div>
+        </div>
+        <div class="banner-corner banner-corner--tl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--tr" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--bl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--br" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Tech Stack -->
+    <section class="detail-stack">
+      <h2 class="detail-stack-title font-mono">// TECH STACK</h2>
+      <div class="detail-chips">
+        <span class="detail-chip">Laravel</span>
+              <span class="detail-chip">React</span>
+              <span class="detail-chip">MySQL</span>
+              <span class="detail-chip">Tailwind CSS</span>
+              <span class="detail-chip">RESTful API</span>
+              <span class="detail-chip">JavaScript</span>
+              <span class="detail-chip">PHP</span>
+              <span class="detail-chip">Blade</span>
+      </div>
+    </section>
+
+    <!-- Content sections -->
+    <div class="detail-content">
+      
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Overview</h2>
+        <div class="detail-section-body">
+          <p>An internship project to rebrand and modernize the official website of Dinas Kepemudaan dan Olahraga (Dispora) Kota Semarang — the city's youth and sports agency. The goal was to replace an outdated, slow portal with a modern, accessible, and content-managed web platform.</p>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Problem</h2>
+        <div class="detail-section-body">
+          <p>The existing Dispora website suffered from an outdated design, slow page loads, and no content management workflow. Staff had no easy way to update news, events, or program information without direct database access.</p>
+      <ul class="detail-list">
+        <li>No CMS — content updates required manual DB edits</li>
+        <li>Poor mobile responsiveness</li>
+        <li>Outdated visual identity inconsistent with Semarang city branding</li>
+        <li>No structured API layer for future integrations</li>
+      </ul>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Solution</h2>
+        <div class="detail-section-body">
+          <p>Built a fullstack platform with Laravel as the API backend and React as the interactive frontend, decoupled via RESTful endpoints. A custom admin panel allows staff to manage news, programs, and events without touching the codebase.</p>
+      <ul class="detail-list">
+        <li>Laravel REST API with sanctum-based auth for admin panel</li>
+        <li>React frontend with Tailwind CSS for responsive, modern UI</li>
+        <li>MySQL relational database with structured content schemas</li>
+        <li>Role-based admin access for content management</li>
+        <li>Performance optimization: lazy loading, image compression, CDN assets</li>
+      </ul>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Results</h2>
+        <div class="detail-section-body">
+          <p>Delivered a fully functional, rebranded government web portal with a clean content management workflow. The site launched as an improved digital touchpoint for Semarang's youth and sports community.</p>
+      <div class="detail-stats">
+        <div class="detail-stat"><span class="stat-val" style="color:#00d4ff">Laravel</span><span class="stat-label">Backend</span></div>
+        <div class="detail-stat"><span class="stat-val" style="color:#00d4ff">React</span><span class="stat-label">Frontend</span></div>
+        <div class="detail-stat"><span class="stat-val" style="color:#00d4ff">Gov</span><span class="stat-label">Client</span></div>
+      </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="detail-nav-footer">
+      <a href="projects.html" class="detail-back-btn font-mono" data-cursor="hover">
+        ← Back to All Projects
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <a href="contact.html" data-cursor="hover">Transmit signal →</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

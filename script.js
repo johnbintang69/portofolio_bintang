@@ -1886,53 +1886,235 @@
   /* =========================================================
    * Projects: holographic tilt + stagger
    * ========================================================= */
+  /* =========================================================
+   * Projects: list layout + floating preview
+   * ========================================================= */
   function initProjects() {
-    const cards = gsap.utils.toArray('.holo-card');
+    const rows = gsap.utils.toArray('.project-row');
+    const preview = document.getElementById('project-preview');
+    const previewMockup = document.getElementById('preview-mockup');
+    const previewLabel = document.getElementById('preview-label');
 
-    gsap.to(cards, {
-      opacity: 1,
-      y: 0,
-      duration: 0.95,
-      stagger: 0.14,
-      ease: 'power3.out',
-      delay: 0.35,
+    // ── Stagger-in entrance ──
+    if (rows.length) {
+      gsap.to(rows, {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        stagger: 0.09,
+        ease: 'power3.out',
+        delay: 0.2,
+      });
+    }
+
+    // ── Filter tabs ──
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach((b) => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+        const filter = btn.dataset.filter;
+        rows.forEach((row) => {
+          const tags = row.dataset.filterTags || 'all';
+          if (filter === 'all' || tags.includes(filter)) {
+            row.classList.remove('is-hidden');
+            gsap.fromTo(row, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+          } else {
+            row.classList.add('is-hidden');
+          }
+        });
+      });
     });
 
-    if (!isFinePointer || prefersReduced) return;
+    // ── Floating preview (fine pointer only) ──
+    if (!preview || !isFinePointer || prefersReduced) return;
 
-    cards.forEach((card) => {
-      const inner = card.querySelector('.holo-inner');
-      const glare = card.querySelector('.holo-glare');
-      if (!inner) return;
+    // GSAP quickTo for butter-smooth follow
+    const moveX = gsap.quickTo(preview, 'x', { duration: 0.4, ease: 'power3.out' });
+    const moveY = gsap.quickTo(preview, 'y', { duration: 0.4, ease: 'power3.out' });
 
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        const rotY = (px - 0.5) * 18;
-        const rotX = (0.5 - py) * 14;
-        inner.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-        if (glare) {
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          glare.style.opacity = '1';
-          glare.style.setProperty('--mouse-x', `${x}px`);
-          glare.style.setProperty('--mouse-y', `${y}px`);
+    rows.forEach((row) => {
+      row.addEventListener('mouseenter', () => {
+        const accent = row.dataset.previewColor || '#00d4ff';
+        const label = row.dataset.previewLabel || '';
+
+        if (previewMockup) {
+          previewMockup.style.setProperty('--preview-accent', accent + '1a');
         }
-      });
-
-      card.addEventListener('mouseleave', () => {
-        inner.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        if (glare) {
-          glare.style.opacity = '0';
+        if (previewLabel) {
+          previewLabel.textContent = label;
+          previewLabel.style.color = accent;
         }
-      });
+        preview.style.boxShadow = '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ' + accent + '44';
+        preview.classList.add('is-visible');
+      }, { passive: true });
+
+      row.addEventListener('mouseleave', () => {
+        preview.classList.remove('is-visible');
+      }, { passive: true });
+
+      row.addEventListener('mousemove', (e) => {
+        const offsetX = 28;
+        const offsetY = -180;
+        const vw = window.innerWidth;
+        const previewW = 320;
+        let x = e.clientX + offsetX;
+        if (x + previewW > vw - 20) {
+          x = e.clientX - previewW - offsetX;
+        }
+        const y = e.clientY + offsetY;
+        moveX(x);
+        moveY(y);
+      }, { passive: true });
     });
   }
 
   /* =========================================================
    * About: terminal typing + radar already CSS-animated
    * ========================================================= */
+  /* =========================================================
+   * Detail page scroll-to-next
+   * ========================================================= */
+  function initDetailScrollNext() {
+    if (document.body.dataset.page !== 'project-detail') return;
+    const currentPath = window.location.pathname;
+    const nextMap = {
+      'project-valorant.html': 'project-dispora.html',
+      'project-dispora.html': 'project-ticketing.html',
+      'project-ticketing.html': 'project-valorant.html',
+    };
+    const next = nextMap[currentPath.split('/').pop()] || null;
+    if (!next) return;
+
+    let hinted = false;
+    let navigated = false;
+    let waitingNextScroll = false;
+
+    const hintEl = document.createElement('div');
+    hintEl.className = 'scroll-hint';
+    hintEl.innerHTML = '<span>Scroll again to explore ↓</span>';
+    Object.assign(hintEl.style, {
+      position: 'fixed', bottom: '40px', left: '50%', transform: 'translateX(-50%)',
+      color: '#fff', fontFamily: 'Share Tech Mono, monospace', fontSize: '12px',
+      letterSpacing: '0.15em', opacity: '0', pointerEvents: 'none',
+      transition: 'opacity 0.4s ease', zIndex: 100,
+    });
+    document.body.appendChild(hintEl);
+
+    const triggerNav = () => {
+      if (navigated) return;
+      navigated = true;
+      hintEl.style.opacity = '0';
+    };
+
+    // Continuous charge progress based on scroll depth
+    let chargeEl = null;
+    let chargePct = 0;
+    const createCharge = () => {
+      if (chargeEl) return;
+      chargeEl = document.createElement('div');
+      chargeEl.className = 'scroll-charge';
+      chargeEl.innerHTML = '<span id="charge-text">Revealing next project</span><div style="margin-top:6px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div id="charge-fill" style="width:0%;height:100%;background:#00d4ff;border-radius:2px;transition:width 0.08s linear;"></div></div><span id="charge-pct" style="display:block;margin-top:4px;font-size:10px;color:#aaa;">0%</span>';
+      chargeEl.style.cssText = 'position:fixed;bottom:60px;left:50%;transform:translateX(-50%);width:300px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 16px;color:#fff;font-family:Share Tech Mono,monospace;font-size:11px;letter-spacing:0.12em;z-index:120;text-align:center;opacity:0;transition:opacity 0.3s ease;';
+      document.body.appendChild(chargeEl);
+      requestAnimationFrame(() => { chargeEl.style.opacity = '1'; });
+    };
+    const removeCharge = () => {
+      if (!chargeEl) return;
+      chargeEl.style.opacity = '0';
+      setTimeout(() => { chargeEl.remove(); chargeEl = null; }, 300);
+    };
+    const updateCharge = (pct) => {
+      const fill = document.getElementById('charge-fill');
+      const pctEl = document.getElementById('charge-pct');
+      const textEl = document.getElementById('charge-text');
+      if (!fill) return;
+      chargePct = Math.max(0, Math.min(100, pct));
+      fill.style.width = chargePct + '%';
+      if (pctEl) pctEl.textContent = Math.floor(chargePct) + '%';
+      if (chargePct >= 100 && textEl) textEl.textContent = 'Complete';
+    };
+
+    let chargeTick = null;
+
+    const onScroll = () => {
+      const scrollTop = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const nearBottom = scrollTop > docHeight - 120;
+
+      if (!nearBottom) {
+        hinted = false;
+        waitingNextScroll = false;
+        hintEl.style.opacity = '0';
+        // Decrease charge on scroll away
+        chargePct = Math.max(0, chargePct - 4);
+        updateCharge(chargePct);
+        if (chargePct <= 0) removeCharge();
+        return;
+      }
+
+      if (!hinted) {
+        hinted = true;
+        waitingNextScroll = true;
+        hintEl.style.opacity = '1';
+      }
+      createCharge();
+      // Charge increases only from user scroll (not automatic timer)
+      chargePct = Math.min(100, chargePct + 0.3);
+      updateCharge(chargePct);
+      if (chargePct >= 100 && !navigated) {
+        navigated = true;
+        hintEl.style.opacity = '0';
+        setTimeout(() => navigateTo(next), 300);
+      }
+    };
+
+    window.addEventListener('wheel', (e) => {
+      if (e.deltaY > 0) {
+        const scrollTop = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const nearBottom = scrollTop > docHeight - 120;
+        if (nearBottom && !navigated) {
+          if (!hinted) { hinted = true; waitingNextScroll = true; hintEl.style.opacity = '1'; }
+          createCharge();
+          chargePct = Math.min(100, chargePct + 0.3);
+          updateCharge(chargePct);
+          if (chargePct >= 100 && !navigated) {
+            navigated = true; hintEl.style.opacity = '0';
+            setTimeout(() => navigateTo(next), 300);
+          }
+        }
+      }
+    }, { passive: true });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (window.__lenis) {
+      window.__lenis.on('scroll', ({ scroll }) => {
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const nearBottom = scroll > docHeight - 120;
+        if (nearBottom) {
+          if (!hinted) { hinted = true; waitingNextScroll = true; hintEl.style.opacity = '1'; }
+          createCharge();
+          chargePct = Math.min(100, chargePct + 0.3);
+          updateCharge(chargePct);
+          if (chargePct >= 100 && !navigated) {
+            navigated = true; hintEl.style.opacity = '0';
+            setTimeout(() => navigateTo(next), 300);
+          }
+        } else {
+          hinted = false; waitingNextScroll = false; hintEl.style.opacity = '0';
+          chargePct = Math.max(0, chargePct - 4);
+          updateCharge(chargePct);
+          if (chargePct <= 0) removeCharge();
+        }
+      });
+    }
+  }
+
   function initAbout() {
     const body = document.getElementById('about-terminal');
     const profileCard = document.querySelector('.profile-card');
@@ -1961,7 +2143,7 @@
 
     const lines = [
       { text: '> whoami', dim: true },
-      { text: 'bintangilhamkurniawan@gmail — Frontend & Fullstack Developer' },
+      { text: 'bintangilhamkurniawan@gmail.com — Frontend & Fullstack Developer' },
       { text: '> cat background.md', dim: true },
       {
         text: 'Pengembang web yang berfokus pada frontend modern dengan React serta kapabilitas fullstack menggunakan Express.js dan Laravel framework. Menguasai JavaScript, Python, dan arsitektur database MySQL & PostgreSQL.',
@@ -2083,6 +2265,9 @@
         break;
       case 'contact':
         initContact();
+        break;
+      case 'project-detail':
+        initDetailScrollNext();
         break;
       default:
         break;

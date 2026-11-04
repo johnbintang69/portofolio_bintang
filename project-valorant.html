@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valorant Match Predictor — BINTANG</title>
+  <meta name="description" content="A machine learning project that predicts the outcome of Valorant competitive matches using pre-match and in-match statistics. The system leverages delta-based f" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="project-detail" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main class="detail-main" data-accent="red">
+
+    <!-- Back button -->
+    <a href="projects.html" class="detail-back font-mono" data-cursor="hover" aria-label="Back to projects">
+      <span class="detail-back-arrow">←</span> All Projects
+    </a>
+
+    <!-- Hero -->
+    <header class="detail-hero">
+      <div class="detail-hero-meta">
+        <span class="detail-num font-mono">PRJ_01</span>
+        <span class="detail-category font-mono" style="color:#ff2a4a">Gaming / Machine Learning</span>
+        <span class="detail-year font-mono">2024</span>
+      </div>
+      <h1 class="detail-title font-display" style="--accent: #ff2a4a">Valorant Match Predictor</h1>
+      <p class="detail-tagline">Predicting match outcomes using delta-feature engineering and ensemble ML models.</p>
+
+      <!-- Accent glow bar -->
+      <div class="detail-hero-bar" style="background: #ff2a4a" aria-hidden="true"></div>
+
+      <!-- Image -->
+      <img src="valorant.jpg" alt="Valorant Match Predictor" class="w-full max-w-4xl mx-auto rounded-xl border border-white/10 shadow-2xl mb-12" />
+
+      <!-- CSS mockup banner -->
+      <div class="detail-banner" data-accent="red" aria-hidden="true">
+        <div class="banner-scanlines"></div>
+        <div class="banner-content">
+          <div class="banner-num font-mono">01</div>
+          <div class="banner-label font-display">VALORANT MATCH PREDICTOR</div>
+          <div class="banner-chips">
+            <span class="banner-chip font-mono">Python</span><span class="banner-chip font-mono">XGBoost</span><span class="banner-chip font-mono">Naive Bayes</span>
+          </div>
+        </div>
+        <div class="banner-corner banner-corner--tl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--tr" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--bl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--br" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Tech Stack -->
+    <section class="detail-stack">
+      <h2 class="detail-stack-title font-mono">// TECH STACK</h2>
+      <div class="detail-chips">
+        <span class="detail-chip">Python</span>
+              <span class="detail-chip">XGBoost</span>
+              <span class="detail-chip">Naive Bayes</span>
+              <span class="detail-chip">Decision Tree</span>
+              <span class="detail-chip">scikit-learn</span>
+              <span class="detail-chip">Pandas</span>
+              <span class="detail-chip">NumPy</span>
+              <span class="detail-chip">Matplotlib</span>
+      </div>
+    </section>
+
+    <!-- Content sections -->
+    <div class="detail-content">
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Project Overview</h2>
+        <div class="detail-section-body">
+          <p>This study aims to deliver an objective prediction of team victory at the VALORANT Champions Tour (VCT) 2025. Given that esports performance analysis often falls into subjective bias, this project applies <strong>Delta Analysis</strong> to measure performance gaps between teams objectively through discriminative feature extraction.</p>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Algorithms Tested</h2>
+        <div class="detail-section-body">
+          <p>The project compares five Machine Learning algorithms to find the best prediction model:</p>
+          <ul class="detail-list">
+            <li>Naïve Bayes</li>
+            <li>Decision Tree</li>
+            <li>XGBoost</li>
+            <li>CatBoost</li>
+            <li>Stacking Classifier</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Results &amp; Conclusion</h2>
+        <div class="detail-section-body">
+          <p>Model evaluation was conducted comprehensively using a dataset of <strong>1,507 observations</strong> from VCT 2025 matches.</p>
+          <ul class="detail-list">
+            <li><strong>Stacking Classifier</strong> — 75.72% (most optimal)</li>
+            <li><strong>XGBoost</strong> — 75.19%</li>
+            <li><strong>Naïve Bayes</strong> — 74.26%</li>
+            <li><strong>CatBoost</strong> — 73.59%</li>
+            <li><strong>Decision Tree</strong> — 72.86%</li>
+          </ul>
+          <p>The synergy of meta-learning combined with Delta Analysis proved capable of producing more stable analytical generalization in handling the complexity of modern esports data.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="detail-nav-footer">
+      <a href="projects.html" class="detail-back-btn font-mono" data-cursor="hover">
+        ← Back to All Projects
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <a href="contact.html" data-cursor="hover">Transmit signal →</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

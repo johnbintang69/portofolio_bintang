@@ -33,6 +33,39 @@
     };
   </script>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    @media (max-width: 768px) {
+      .hero-name {
+        font-size: 3rem !important;
+        line-height: 1.1;
+      }
+
+      .hero-kicker,
+      .hero-roles {
+        font-size: 0.85rem;
+      }
+
+      .mantra-huge {
+        font-size: 2.5rem !important;
+        line-height: 1.1;
+      }
+
+      .work-row {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px 0;
+      }
+
+      .work-row>span:first-child {
+        white-space: normal;
+        font-size: 1rem;
+      }
+
+      .arsenal-panel h3 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
 </head>
 
 <body data-page="home" class="bg-void text-zinc-100 antialiased">
@@ -132,9 +165,10 @@
       <div class="home-strip-inner">
         <p class="font-mono text-xs tracking-[0.25em] uppercase text-neon-purple">01 — Signal</p>
         <p class="signal-lede">
-          Portofolio interaktif seorang Frontend Developer dengan kapabilitas Fullstack modern. Berfokus pada
-          pengembangan antarmuka React yang responsif dan interaktif, arsitektur backend Express.js &amp; Laravel, serta
-          manajemen database terstruktur MySQL &amp; PostgreSQL.
+          Interactive portfolio of a Frontend Developer with modern Fullstack capabilities. Focused on responsive and
+          interactive React interfaces, Express.js &amp; Laravel backend architecture, and structured MySQL &amp;
+          PostgreSQL
+          database management.
         </p>
         <div class="flex flex-wrap gap-3 mt-2">
           <a href="projects.html"
@@ -208,9 +242,9 @@
             </div>
             <p class="philo-section-label">04 — Core Philosophy</p>
             <blockquote class="philo-quote">
-              Antarmuka yang intuitif berawal dari empati pengguna, ditenagai oleh arsitektur kode yang tangguh.
-              Menggabungkan ketelitian frontend React dengan keandalan backend Express &amp; Laravel untuk membangun
-              pengalaman web yang cepat, elegan, dan terstruktur.
+              Intuitive interfaces emerge from user empathy, powered by resilient code architecture.
+              Combining React frontend precision with Express &amp; Laravel backend reliability to build fast,
+              elegant, and structured web experiences.
             </blockquote>
             <div class="philo-card-footer">
               <span class="philo-author">BINTANG — FRONTEND &amp; FULLSTACK DEVELOPER</span>
@@ -227,8 +261,8 @@
         <div class="topo-grid" id="topo-grid" aria-hidden="true"></div>
         <p class="decrypt-label">06 — Decryption</p>
         <p class="decrypt-text" id="decrypt-text">
-          Berbasis di Kendal. Merancang antarmuka presisi dan sistem modular. Menguasai frontend React modern, backend
-          Express &amp; Laravel, serta arsitektur data PostgreSQL &amp; MySQL.
+          Based in Kendal. Crafting precise interfaces and modular systems. Mastering modern React frontend,
+          Express &amp; Laravel backend, and PostgreSQL &amp; MySQL data architecture.
         </p>
       </div>
     </section>
@@ -248,8 +282,8 @@
                 <span class="arsenal-tag">Panel 01</span>
                 <h3>Frontend Architecture</h3>
                 <p>
-                  Pengembangan antarmuka modern menggunakan React, Tailwind CSS, dan JavaScript. Berfokus pada komponen
-                  modular, state management reaktif, aksesibilitas, dan animasi interaktif performa tinggi.
+                  Modern interface development using React, Tailwind CSS, and JavaScript. Focused on modular
+                  components, reactive state management, accessibility, and high-performance interactive animations.
                 </p>
               </div>
             </article>
@@ -259,9 +293,8 @@
                 <span class="arsenal-tag">Panel 02</span>
                 <h3>Fullstack &amp; API Systems</h3>
                 <p>
-                  Pembangunan RESTful API yang efisien dengan Express.js serta pengembangan web terstruktur berbasis
-                  Laravel framework. Menggabungkan arsitektur MVC, validasi request yang ketat, dan integrasi
-                  frontend-backend yang mulus.
+                  Efficient RESTful API development with Express.js and structured Laravel-based web development.
+                  Integrating MVC architecture, strict request validation, and seamless frontend-backend fusion.
                 </p>
               </div>
             </article>
@@ -271,8 +304,8 @@
                 <span class="arsenal-tag">Panel 03</span>
                 <h3>Database &amp; Python Scripting</h3>
                 <p>
-                  Pengelolaan data relasional terstruktur menggunakan PostgreSQL dan MySQL, didukung scripting
-                  otomatisasi, pemrosesan data, dan integrasi backend menggunakan Python.
+                  Structured relational data management using PostgreSQL and MySQL, supported by automation scripting,
+                  data processing, and backend integration with Python.
                 </p>
               </div>
             </article>
@@ -339,7 +372,7 @@
             <div class="timeline-card" data-cursor="hover">
               <span class="timeline-tag">01 // ORIGIN</span>
               <h3 class="timeline-heading">Base: Kendal</h3>
-              <p class="timeline-sub">Awal mula eksplorasi web &amp; rekayasa perangkat lunak</p>
+              <p class="timeline-sub">The beginning of web exploration and software engineering</p>
             </div>
           </div>
 
@@ -350,7 +383,7 @@
             <div class="timeline-card" data-cursor="hover">
               <span class="timeline-tag">02 // FOUNDATION</span>
               <h3 class="timeline-heading">Core Programming</h3>
-              <p class="timeline-sub">Penguasaan mendalam logika JavaScript &amp; Python</p>
+              <p class="timeline-sub">Deep mastery of JavaScript &amp; Python logic</p>
             </div>
           </div>
 
@@ -361,7 +394,7 @@
             <div class="timeline-card" data-cursor="hover">
               <span class="timeline-tag">03 // FRONTEND CRAFT</span>
               <h3 class="timeline-heading">React &amp; Modern UI</h3>
-              <p class="timeline-sub">Membangun antarmuka interaktif, fluid &amp; responsif</p>
+              <p class="timeline-sub">Building interactive, fluid &amp; responsive interfaces</p>
             </div>
           </div>
 
@@ -372,7 +405,7 @@
             <div class="timeline-card" data-cursor="hover">
               <span class="timeline-tag">04 // FULLSTACK EXTENSION</span>
               <h3 class="timeline-heading">Express.js, Laravel &amp; Databases</h3>
-              <p class="timeline-sub">Orkestrasi RESTful API, PostgreSQL &amp; MySQL</p>
+              <p class="timeline-sub">Orchestration of RESTful APIs, PostgreSQL &amp; MySQL</p>
             </div>
           </div>
         </div>
@@ -421,9 +454,9 @@
         <div class="sng-text-wrap" id="sng-text-wrap">
           <p class="sng-label" id="sng-label">05 — The Singularity</p>
           <p class="sng-quote" id="sng-quote">
-            Antarmuka bukan sekadar tampilan visual, melainkan titik temu antara interaksi manusia dan keandalan sistem
-            di baliknya. Dari komponen React hingga query PostgreSQL &amp; MySQL, setiap baris kode dirancang untuk
-            performa dan efisiensi.
+            An interface is not merely a visual surface, but the meeting point between human interaction and the
+            reliability of the system behind it. From React components to PostgreSQL &amp; MySQL queries, every line of
+            code is engineered for performance and efficiency.
           </p>
         </div>
       </div>
@@ -434,8 +467,8 @@
       <div class="void-emptiness" aria-hidden="true"></div>
       <div class="void-reveal">
         <div class="void-laser" id="void-laser" aria-hidden="true"></div>
-        <a href="contact.html" class="void-cta btn-magnetic" id="void-cta" data-cursor="hover">
-          INITIATE_CONTACT
+        <a href="projects.html" class="void-cta btn-magnetic" id="void-cta" data-cursor="hover">
+          VIEW PROJECTS
         </a>
       </div>
     </section>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ticketing App — BINTANG</title>
+  <meta name="description" content="A fullstack web application for purchasing concert tickets online. Built with Laravel for backend ticket quota management and React for a responsive, interactiv" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Rajdhani', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace'],
+          },
+          colors: {
+            void: '#03040a',
+            neon: { blue: '#00d4ff', red: '#ff2a4a', purple: '#b24bff', green: '#39ff8e' },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body data-page="project-detail" class="bg-void text-zinc-100 antialiased">
+
+  <div class="page-transition" aria-hidden="true"></div>
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
+  <header id="cyber-nav" class="cyber-nav">
+    <a href="index.html" class="nav-brand" data-cursor="hover">JB</a>
+    <button type="button" id="mobile-toggle" class="mobile-toggle" aria-label="Menu" aria-expanded="false"
+      data-cursor="hover">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+    <ul id="nav-links" class="nav-links">
+      <li><a href="index.html" data-cursor="hover">Home</a></li>
+      <li><a href="projects.html" data-cursor="hover">Projects</a></li>
+      <li><a href="about.html" data-cursor="hover">About</a></li>
+      <li><a href="contact.html" data-cursor="hover">Contact</a></li>
+    </ul>
+    <span class="nav-status">Online</span>
+  </header>
+
+  <main class="detail-main" data-accent="purple">
+
+    <!-- Back button -->
+    <a href="projects.html" class="detail-back font-mono" data-cursor="hover" aria-label="Back to projects">
+      <span class="detail-back-arrow">←</span> All Projects
+    </a>
+
+    <!-- Hero -->
+    <header class="detail-hero">
+      <div class="detail-hero-meta">
+        <span class="detail-num font-mono">PRJ_03</span>
+        <span class="detail-category font-mono" style="color:#b24bff">Fullstack / E-Commerce</span>
+        <span class="detail-year font-mono">2024</span>
+      </div>
+      <h1 class="detail-title font-display" style="--accent: #b24bff">Ticketing App</h1>
+      <p class="detail-tagline">Concert ticket booking platform with real-time quota validation and interactive checkout.</p>
+
+      <!-- Accent glow bar -->
+      <div class="detail-hero-bar" style="background: #b24bff" aria-hidden="true"></div>
+
+      <!-- Image -->
+      <img src="ticketing app.jpg" alt="Ticketing App" class="w-full max-w-4xl mx-auto rounded-xl border border-white/10 shadow-2xl mb-12" />
+
+      <!-- CSS mockup banner -->
+      <div class="detail-banner" data-accent="purple" aria-hidden="true">
+        <div class="banner-scanlines"></div>
+        <div class="banner-content">
+          <div class="banner-num font-mono">03</div>
+          <div class="banner-label font-display">TICKETING APP</div>
+          <div class="banner-chips">
+            <span class="banner-chip font-mono">Laravel</span><span class="banner-chip font-mono">React</span><span class="banner-chip font-mono">MySQL</span>
+          </div>
+        </div>
+        <div class="banner-corner banner-corner--tl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--tr" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--bl" aria-hidden="true"></div>
+        <div class="banner-corner banner-corner--br" aria-hidden="true"></div>
+      </div>
+    </header>
+
+    <!-- Tech Stack -->
+    <section class="detail-stack">
+      <h2 class="detail-stack-title font-mono">// TECH STACK</h2>
+      <div class="detail-chips">
+        <span class="detail-chip">Laravel</span>
+              <span class="detail-chip">React</span>
+              <span class="detail-chip">MySQL</span>
+              <span class="detail-chip">JavaScript</span>
+              <span class="detail-chip">PHP</span>
+              <span class="detail-chip">Tailwind CSS</span>
+              <span class="detail-chip">REST API</span>
+              <span class="detail-chip">State Management</span>
+      </div>
+    </section>
+
+    <!-- Content sections -->
+    <div class="detail-content">
+      
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Overview</h2>
+        <div class="detail-section-body">
+          <p>A fullstack web application for purchasing concert tickets online. Built with Laravel for backend ticket quota management and React for a responsive, interactive seat selection and checkout experience with real-time availability feedback.</p>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Features</h2>
+        <div class="detail-section-body">
+          <ul class="detail-list">
+        <li>Browse concerts with event details, artist info, and venue maps</li>
+        <li>Ticket category selection (Regular, VIP, VVIP) with live quota display</li>
+        <li>Shopping cart with multi-ticket support and quantity validation</li>
+        <li>Secure checkout flow with order summary and confirmation</li>
+        <li>Admin dashboard for event and ticket quota management</li>
+        <li>Responsive UI optimized for both desktop and mobile</li>
+      </ul>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Implementation</h2>
+        <div class="detail-section-body">
+          <p>Laravel handles all business logic server-side: quota validation on ticket reservation, order creation, and admin CRUD for events. React manages the UI state — cart, ticket counts, real-time availability updates — via local state and context API.</p>
+      <ul class="detail-list">
+        <li>Laravel REST API with request validation and resource transformers</li>
+        <li>React Context API for global cart state management</li>
+        <li>MySQL schema: events → ticket_categories → orders → order_items</li>
+        <li>Atomic ticket reservation to prevent overselling</li>
+        <li>Tailwind CSS for consistent, mobile-first responsive design</li>
+      </ul>
+        </div>
+      </section>
+
+      <section class="detail-section">
+        <h2 class="detail-section-title font-display">Key Challenges</h2>
+        <div class="detail-section-body">
+          <p>The main challenge was preventing race conditions in ticket reservation — two users buying the last ticket simultaneously. Solved with database-level transactions and row locking in Laravel's Eloquent, ensuring atomic decrement of available quota.</p>
+      <div class="detail-stats">
+        <div class="detail-stat"><span class="stat-val" style="color:#b24bff">Atomic</span><span class="stat-label">Reservations</span></div>
+        <div class="detail-stat"><span class="stat-val" style="color:#b24bff">Laravel</span><span class="stat-label">+ React</span></div>
+        <div class="detail-stat"><span class="stat-val" style="color:#b24bff">3</span><span class="stat-label">Ticket Tiers</span></div>
+      </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="detail-nav-footer">
+      <a href="projects.html" class="detail-back-btn font-mono" data-cursor="hover">
+        ← Back to All Projects
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; <span id="year"></span> Bintang</span>
+    <a href="contact.html" data-cursor="hover">Transmit signal →</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
