@@ -1,6 +1,19 @@
 (() => {
   'use strict';
 
+  // Perf gate: cap animation framerate to ~30fps on low-end devices (all rAF loops go through this)
+  const __nativeRAF = window.requestAnimationFrame.bind(window);
+  const __isLowEnd = (navigator.hardwareConcurrency || 8) <= 4;
+  let __lastRAFTime = 0;
+  const requestAnimationFrame = (cb) => {
+    if (!__isLowEnd) return __nativeRAF(cb);
+    const tick = (now) => {
+      if (now - __lastRAFTime >= 32) { __lastRAFTime = now; cb(now); }
+      else __nativeRAF(tick);
+    };
+    return __nativeRAF(tick);
+  };
+
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isFinePointer = window.matchMedia('(pointer: fine)').matches;
   const page = document.body.dataset.page || 'home';
@@ -1990,128 +2003,203 @@
     const next = nextMap[currentPath.split('/').pop()] || null;
     if (!next) return;
 
-    let hinted = false;
     let navigated = false;
-    let waitingNextScroll = false;
-
-    const hintEl = document.createElement('div');
-    hintEl.className = 'scroll-hint';
-    hintEl.innerHTML = '<span>Scroll again to explore ↓</span>';
-    Object.assign(hintEl.style, {
-      position: 'fixed', bottom: '40px', left: '50%', transform: 'translateX(-50%)',
-      color: '#fff', fontFamily: 'Share Tech Mono, monospace', fontSize: '12px',
-      letterSpacing: '0.15em', opacity: '0', pointerEvents: 'none',
-      transition: 'opacity 0.4s ease', zIndex: 100,
-    });
-    document.body.appendChild(hintEl);
-
-    const triggerNav = () => {
-      if (navigated) return;
-      navigated = true;
-      hintEl.style.opacity = '0';
-    };
-
-    // Continuous charge progress based on scroll depth
-    let chargeEl = null;
     let chargePct = 0;
-    const createCharge = () => {
-      if (chargeEl) return;
-      chargeEl = document.createElement('div');
-      chargeEl.className = 'scroll-charge';
-      chargeEl.innerHTML = '<span id="charge-text">Revealing next project</span><div style="margin-top:6px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div id="charge-fill" style="width:0%;height:100%;background:#00d4ff;border-radius:2px;transition:width 0.08s linear;"></div></div><span id="charge-pct" style="display:block;margin-top:4px;font-size:10px;color:#aaa;">0%</span>';
-      chargeEl.style.cssText = 'position:fixed;bottom:60px;left:50%;transform:translateX(-50%);width:300px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 16px;color:#fff;font-family:Share Tech Mono,monospace;font-size:11px;letter-spacing:0.12em;z-index:120;text-align:center;opacity:0;transition:opacity 0.3s ease;';
+    let lastScrollY = -1;
+    let accumulatedDelta = 0;
+    let mouseX = -1;
+    let mouseY = -1;
+
+    // ---- Static charge box: created ONCE, permanently visible at the bottom ----
+    const chargeEl = document.createElement('div');
+    chargeEl.id = 'scroll-charge-box';
+    chargeEl.innerHTML = '<div style="text-align:center; padding: 6px 24px;">'
+      + '<div style="font-size: 20px; letter-spacing: 0.08em; font-family: Orbitron, sans-serif; color: #fff; line-height: 1.2;">Revealing next project <span style="color:#00d4ff;">↗</span></div>'
+      + '<div id="charge-segments" style="margin: 12px auto 8px; display: flex; gap: 4px; justify-content: center; align-items: center; height: 6px;">'
+      + Array.from({ length: 10 }, (_, i) => `<div data-seg="${i}" style="width: 26px; height: 6px; background: #00d4ff; border-radius: 1px; opacity: 0.15; transition: opacity 0.15s;"></div>`).join('')
+      + '</div>'
+      + '<div id="charge-caption" style="font-family: Share Tech Mono, monospace; font-size: 10px; letter-spacing: 0.2em; color: #aaa;">SCROLL DOWN TO CHARGE ↓</div>'
+      + '</div>';
+    chargeEl.style.cssText = [
+      'position: relative', 'display: block', 'width: 100%', 'margin-top: 40px',
+      'background: rgba(6,8,14,0.92)',
+      'border-top: 1px solid rgba(0,212,255,0.18)', 'padding: 56px 24px 64px',
+      'color: #fff', 'font-family: Share Tech Mono, monospace', 'font-size: 11px', 'letter-spacing: 0.12em',
+      'text-align: center', 'box-sizing: border-box',
+    ].join('; ') + ';';
+    const pageFooter = document.querySelector('.site-footer');
+    if (pageFooter && pageFooter.parentNode) {
+      pageFooter.parentNode.insertBefore(chargeEl, pageFooter);
+    } else {
       document.body.appendChild(chargeEl);
-      requestAnimationFrame(() => { chargeEl.style.opacity = '1'; });
-    };
-    const removeCharge = () => {
-      if (!chargeEl) return;
-      chargeEl.style.opacity = '0';
-      setTimeout(() => { chargeEl.remove(); chargeEl = null; }, 300);
-    };
+    }
+
+    const segEls = Array.from(chargeEl.querySelectorAll('[data-seg]'));
+    const captionEl = chargeEl.querySelector('#charge-caption');
+
     const updateCharge = (pct) => {
-      const fill = document.getElementById('charge-fill');
-      const pctEl = document.getElementById('charge-pct');
-      const textEl = document.getElementById('charge-text');
-      if (!fill) return;
       chargePct = Math.max(0, Math.min(100, pct));
-      fill.style.width = chargePct + '%';
-      if (pctEl) pctEl.textContent = Math.floor(chargePct) + '%';
-      if (chargePct >= 100 && textEl) textEl.textContent = 'Complete';
+      const active = Math.floor((chargePct / 100) * segEls.length + 0.0001);
+      segEls.forEach((seg, i) => { seg.style.opacity = i < active ? '1' : '0.15'; });
+      if (captionEl) {
+        captionEl.textContent = chargePct >= 100
+          ? 'RELEASED → NEXT PROJECT'
+          : 'SCROLL DOWN TO CHARGE ↓';
+      }
     };
 
-    let chargeTick = null;
+    // Hover detection from raw pointer coordinates — immune to enter/leave edge cases
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, { passive: true });
+
+    const isOverCharge = () => {
+      if (mouseX < 0 || mouseY < 0) return false;
+      const r = chargeEl.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return false;
+      // The box may be taller than the remaining viewport: clamp to the visible part,
+      // and treat "pointer anywhere in the bottom half of the screen" as engaging with it.
+      const top = Math.max(r.top, window.innerHeight * 0.5);
+      const bottom = Math.min(r.bottom, window.innerHeight);
+      if (bottom <= top) return false;
+      return mouseX >= r.left && mouseX <= r.right && mouseY >= top && mouseY <= bottom;
+    };
+
+    // Touch devices have no hover: engaging with the box means it is on screen
+    const isOverChargeTouch = () => {
+      const r = chargeEl.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return false;
+      return r.top < window.innerHeight && r.bottom > 0;
+    };
+
+    const hoverOk = () => (isFinePointer ? isOverCharge() : isOverChargeTouch());
+
+    /* Charge logic
+     * - Only DOWNWARD scroll increases the charge.
+     * - UPWARD scroll (or scrolling away from the bottom) drains it.
+     * - The "near bottom" requirement is dropped for the charge itself; instead the
+     *   page must be at the very bottom OR the pointer must be over the box.
+     */
+    const updateChargeState = (scrollTop) => {
+      const prev = lastScrollY;
+      lastScrollY = scrollTop;
+
+      if (navigated) return;
+
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const atBottom = docHeight <= 0 ? true : scrollTop >= docHeight - 8;
+
+      const delta = prev >= 0 ? scrollTop - prev : 0;
+
+      if (delta > 0) {
+        // DOWNWARD: accumulate scroll distance, charge when threshold reached
+        accumulatedDelta += delta;
+        const threshold = 24; // px of downward scroll needed per charge tick
+        if (hoverOk() && accumulatedDelta >= threshold) {
+          const ticks = Math.floor(accumulatedDelta / threshold);
+          accumulatedDelta -= ticks * threshold;
+          updateCharge(chargePct + ticks * 4);
+          if (chargePct >= 100) {
+            navigated = true;
+            if (captionEl) captionEl.textContent = 'RELEASED → NEXT PROJECT';
+            setTimeout(() => navigateTo(next), 350);
+          }
+        } else if (!atBottom && !hoverOk()) {
+          // scrolling down but not over box and not at bottom -> drain
+          accumulatedDelta = 0;
+          updateCharge(chargePct - 4);
+        }
+      } else if (delta < 0) {
+        // UPWARD: always drains
+        accumulatedDelta = 0;
+        updateCharge(chargePct - 4);
+      } else if (!atBottom && !hoverOk()) {
+        accumulatedDelta = 0;
+        updateCharge(chargePct - 4);
+      }
+    };
 
     const onScroll = () => {
-      const scrollTop = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const nearBottom = scrollTop > docHeight - 120;
-
-      if (!nearBottom) {
-        hinted = false;
-        waitingNextScroll = false;
-        hintEl.style.opacity = '0';
-        // Decrease charge on scroll away
-        chargePct = Math.max(0, chargePct - 4);
-        updateCharge(chargePct);
-        if (chargePct <= 0) removeCharge();
-        return;
-      }
-
-      if (!hinted) {
-        hinted = true;
-        waitingNextScroll = true;
-        hintEl.style.opacity = '1';
-      }
-      createCharge();
-      // Charge increases only from user scroll (not automatic timer)
-      chargePct = Math.min(100, chargePct + 0.3);
-      updateCharge(chargePct);
-      if (chargePct >= 100 && !navigated) {
-        navigated = true;
-        hintEl.style.opacity = '0';
-        setTimeout(() => navigateTo(next), 300);
-      }
+      updateChargeState(window.scrollY || (window.__lenis ? window.__lenis.scroll : 0));
     };
-
-    window.addEventListener('wheel', (e) => {
-      if (e.deltaY > 0) {
-        const scrollTop = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const nearBottom = scrollTop > docHeight - 120;
-        if (nearBottom && !navigated) {
-          if (!hinted) { hinted = true; waitingNextScroll = true; hintEl.style.opacity = '1'; }
-          createCharge();
-          chargePct = Math.min(100, chargePct + 0.3);
-          updateCharge(chargePct);
-          if (chargePct >= 100 && !navigated) {
-            navigated = true; hintEl.style.opacity = '0';
-            setTimeout(() => navigateTo(next), 300);
-          }
-        }
-      }
-    }, { passive: true });
 
     window.addEventListener('scroll', onScroll, { passive: true });
     if (window.__lenis) {
-      window.__lenis.on('scroll', ({ scroll }) => {
-        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const nearBottom = scroll > docHeight - 120;
-        if (nearBottom) {
-          if (!hinted) { hinted = true; waitingNextScroll = true; hintEl.style.opacity = '1'; }
-          createCharge();
-          chargePct = Math.min(100, chargePct + 0.3);
-          updateCharge(chargePct);
-          if (chargePct >= 100 && !navigated) {
-            navigated = true; hintEl.style.opacity = '0';
-            setTimeout(() => navigateTo(next), 300);
+      window.__lenis.on('scroll', ({ scroll }) => updateChargeState(scroll));
+    }
+
+    /* Wheel events fire EVEN when the page can't scroll further (at the bottom).
+     * This is the key fix: when the page is stuck at the bottom and the user keeps
+     * scrolling down, scroll events stop firing but wheel events keep coming.
+     * We use deltaY > 0 = downward = charge up, deltaY < 0 = upward = drain.
+     */
+    const WHEEL_THRESHOLD = 8; // px of wheel delta per charge tick
+    let wheelAccum = 0;
+    window.addEventListener('wheel', (e) => {
+      if (navigated) return;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const st = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
+      const atBottom = docHeight <= 0 ? true : st >= docHeight - 24;
+
+      if (e.deltaY > 0) {
+        // DOWNWARD wheel
+        if (hoverOk()) {
+          wheelAccum += e.deltaY;
+          if (wheelAccum >= WHEEL_THRESHOLD) {
+            const ticks = Math.floor(wheelAccum / WHEEL_THRESHOLD);
+            wheelAccum -= ticks * WHEEL_THRESHOLD;
+            updateCharge(chargePct + ticks * 5);
+            if (chargePct >= 100) {
+              navigated = true;
+              if (captionEl) captionEl.textContent = 'RELEASED → NEXT PROJECT';
+              setTimeout(() => navigateTo(next), 350);
+            }
           }
-        } else {
-          hinted = false; waitingNextScroll = false; hintEl.style.opacity = '0';
-          chargePct = Math.max(0, chargePct - 4);
-          updateCharge(chargePct);
-          if (chargePct <= 0) removeCharge();
+        } else if (!atBottom) {
+          wheelAccum = 0;
+          updateCharge(chargePct - 5);
         }
-      });
+      } else if (e.deltaY < 0) {
+        // UPWARD wheel — drain
+        wheelAccum = 0;
+        updateCharge(chargePct - 5);
+      }
+    }, { passive: true });
+
+    /* Touch fallback: on touch devices, trackwheel-like gestures at the bottom
+     * via touchmove delta when the page is at the bottom.
+     */
+    if (!isFinePointer) {
+      let touchStartY = 0;
+      window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+      window.addEventListener('touchmove', (e) => {
+        if (navigated) return;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollTop = window.scrollY || (window.__lenis ? window.__lenis.scroll : 0);
+        const atBottom = docHeight <= 0 ? true : scrollTop >= docHeight - 8;
+        if (!atBottom) return;
+        const dy = touchStartY - e.touches[0].clientY; // positive = downward
+        if (dy > 0) {
+          wheelAccum += dy;
+          if (wheelAccum >= WHEEL_THRESHOLD * 2) {
+            const ticks = Math.floor(wheelAccum / (WHEEL_THRESHOLD * 2));
+            wheelAccum -= ticks * (WHEEL_THRESHOLD * 2);
+            updateCharge(chargePct + ticks * 5);
+            if (chargePct >= 100) {
+              navigated = true;
+              if (captionEl) captionEl.textContent = 'RELEASED → NEXT PROJECT';
+              setTimeout(() => navigateTo(next), 350);
+            }
+          }
+          touchStartY = e.touches[0].clientY;
+        } else if (dy < 0) {
+          wheelAccum = 0;
+          updateCharge(chargePct - 5);
+        }
+      }, { passive: true });
     }
   }
 
