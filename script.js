@@ -111,15 +111,38 @@
 
     const toggle = document.getElementById('mobile-toggle');
     const links = document.getElementById('nav-links');
-    toggle?.addEventListener('click', () => {
-      links?.classList.toggle('is-open');
-      const open = links?.classList.contains('is-open');
-      toggle.setAttribute('aria-expanded', String(!!open));
-    });
+    if (toggle && links) {
+      const setOpen = (open) => {
+        links.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        // keep the bar visible while the menu is open
+        if (open) nav.classList.remove('is-hidden');
+      };
 
-    links?.querySelectorAll('a').forEach((a) => {
-      a.addEventListener('click', () => links.classList.remove('is-open'));
-    });
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpen(!links.classList.contains('is-open'));
+      });
+
+      // pointerup fallback for devices where click is swallowed
+      toggle.addEventListener('pointerup', (e) => {
+        if (e.pointerType === 'mouse') return;
+        e.preventDefault();
+        setOpen(!links.classList.contains('is-open'));
+      });
+
+      links.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('click', () => setOpen(false));
+      });
+
+      // close on outside tap
+      document.addEventListener('pointerdown', (e) => {
+        if (!links.classList.contains('is-open')) return;
+        if (nav.contains(e.target)) return;
+        setOpen(false);
+      }, { passive: true });
+    }
   }
 
   /* =========================================================
@@ -171,6 +194,9 @@
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      // Keep native touch scrolling on phones: Lenis' touch interception
+      // swallows taps on fixed elements such as the mobile nav toggle.
+      syncTouch: false,
     });
 
     window.__lenis = lenis;

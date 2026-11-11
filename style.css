@@ -220,6 +220,10 @@ a {
   pointer-events: none;
 }
 
+.cyber-nav.is-hidden .mobile-toggle {
+  pointer-events: auto;
+}
+
 .nav-brand {
   font-family: var(--font-display);
   font-size: 0.78rem;
@@ -288,14 +292,23 @@ a {
 
 .mobile-toggle {
   display: none;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  min-height: 3rem;
   border-radius: 999px;
   border: 1px solid rgba(0, 212, 255, 0.3);
   background: rgba(0, 212, 255, 0.08);
   color: var(--neon-blue);
   align-items: center;
   justify-content: center;
+  position: relative;
+  z-index: 105;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
 }
 
 @media (max-width: 760px) {
