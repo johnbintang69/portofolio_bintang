@@ -112,25 +112,23 @@
     const toggle = document.getElementById('mobile-toggle');
     const links = document.getElementById('nav-links');
     if (toggle && links) {
+      let lastToggle = 0;
       const setOpen = (open) => {
         links.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
         // keep the bar visible while the menu is open
         if (open) nav.classList.remove('is-hidden');
       };
-
-      toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      const safeToggle = () => {
+        const now = Date.now();
+        if (now - lastToggle < 250) return; // debounce double-fire
+        lastToggle = now;
         setOpen(!links.classList.contains('is-open'));
-      });
+      };
 
-      // pointerup fallback for devices where click is swallowed
-      toggle.addEventListener('pointerup', (e) => {
-        if (e.pointerType === 'mouse') return;
-        e.preventDefault();
-        setOpen(!links.classList.contains('is-open'));
-      });
+      // click covers mouse; touchend covers phones where click may be delayed
+      toggle.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); safeToggle(); });
+      toggle.addEventListener('touchend', (e) => { e.preventDefault(); e.stopPropagation(); safeToggle(); }, { passive: false });
 
       links.querySelectorAll('a').forEach((a) => {
         a.addEventListener('click', () => setOpen(false));
