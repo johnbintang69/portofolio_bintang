@@ -90,6 +90,14 @@
     let ticking = false;
 
     const update = (y) => {
+      // Disable auto-hide on mobile (<= 760px): keep navbar fixed/visible
+      const isMobile = window.matchMedia('(max-width: 760px)').matches;
+      if (isMobile) {
+        nav.classList.remove('is-hidden');
+        lastY = y;
+        ticking = false;
+        return;
+      }
       if (y > lastY && y > 80) nav.classList.add('is-hidden');
       else nav.classList.remove('is-hidden');
       lastY = y;

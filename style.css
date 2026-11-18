@@ -313,9 +313,20 @@ a {
 
 @media (max-width: 760px) {
   .cyber-nav {
+    position: fixed;
+    top: 0.65rem;
     flex-wrap: wrap;
     border-radius: 1.25rem;
-    top: 0.65rem;
+    transform: translateX(-50%);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Never slide the bar away on mobile: the toggle must stay reachable */
+  .cyber-nav.is-hidden {
+    transform: translateX(-50%);
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .nav-status {
