@@ -86,13 +86,16 @@
     const nav = document.getElementById('cyber-nav');
     if (!nav) return;
 
+    // Touch devices and narrow viewports never auto-hide the bar: sliding it
+    // away on scroll reads as the menu "jumping around" and hides the toggle.
+    const noAutoHideQuery = window.matchMedia('(max-width: 760px), (pointer: coarse)');
+    const shouldAutoHide = () => !noAutoHideQuery.matches;
+
     let lastY = 0;
     let ticking = false;
 
     const update = (y) => {
-      // Disable auto-hide on mobile (<= 760px): keep navbar fixed/visible
-      const isMobile = window.matchMedia('(max-width: 760px)').matches;
-      if (isMobile) {
+      if (!shouldAutoHide()) {
         nav.classList.remove('is-hidden');
         lastY = y;
         ticking = false;
@@ -114,6 +117,17 @@
     // Always listen on the native scroll event: Lenis may not exist yet at init
     // time (or may fail to load), and native scroll still fires alongside Lenis.
     window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
+
+    // If the viewport crosses the breakpoint (rotate / resize), drop any stale state.
+    const syncMode = () => {
+      if (!shouldAutoHide()) nav.classList.remove('is-hidden');
+    };
+    if (noAutoHideQuery.addEventListener) {
+      noAutoHideQuery.addEventListener('change', syncMode);
+    } else if (noAutoHideQuery.addListener) {
+      noAutoHideQuery.addListener(syncMode);
+    }
+    syncMode();
 
     const toggle = document.getElementById('mobile-toggle');
     const links = document.getElementById('nav-links');

@@ -320,6 +320,8 @@ a {
     transform: translateX(-50%);
     opacity: 1;
     pointer-events: auto;
+    /* No slide transition on mobile — the bar must feel pinned */
+    transition: none;
   }
 
   /* Never slide the bar away on mobile: the toggle must stay reachable */
