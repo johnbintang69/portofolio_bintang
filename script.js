@@ -103,11 +103,9 @@
       }
     };
 
-    if (window.__lenis) {
-      window.__lenis.on('scroll', ({ scroll }) => onScroll(scroll));
-    } else {
-      window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
-    }
+    // Always listen on the native scroll event: Lenis may not exist yet at init
+    // time (or may fail to load), and native scroll still fires alongside Lenis.
+    window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
 
     const toggle = document.getElementById('mobile-toggle');
     const links = document.getElementById('nav-links');
@@ -2353,17 +2351,20 @@
    * Boot
    * ========================================================= */
   function boot() {
+    // ── Critical nav: always init regardless of GSAP availability ──
+    initNavAutoHide();
+
+    // Set year
+    const year = document.getElementById('year');
+    if (year) year.textContent = String(new Date().getFullYear());
+
     if (typeof gsap === 'undefined') return;
     gsap.registerPlugin(ScrollTrigger);
 
     playEnter();
     initNavLinks();
     initLenis();
-    initNavAutoHide();
     initCursor();
-
-    const year = document.getElementById('year');
-    if (year) year.textContent = String(new Date().getFullYear());
 
     switch (page) {
       case 'home':
